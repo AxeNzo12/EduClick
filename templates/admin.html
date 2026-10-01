@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="pantalla-actividad">
+    <h2>Panel de Administrador ⚙️</h2>
+    <p>Agrega nuevas preguntas al catálogo de EduClick</p>
+
+    <!-- Alerta de éxito cuando se guarda una pregunta -->
+    {% if mensaje %}
+        <div class="mensaje-feedback correcto" style="display: block; margin-top: 15px;">
+            {{ mensaje }}
+        </div>
+    {% endif %}
+
+    <!-- Formulario de captura -->
+    <form method="POST" action="/admin" style="max-width: 500px; margin: 20px auto; text-align: left;">
+        
+        <div style="margin-bottom: 15px;">
+            <label style="font-weight: bold;">Materia:</label><br>
+            <select name="materia_id" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                {% for materia in materias %}
+                    <option value="{{ materia.id }}">{{ materia.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <label style="font-weight: bold;">Grado Escolar (1-6):</label><br>
+            <input type="number" name="grado" min="1" max="6" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label style="font-weight: bold;">Pregunta:</label><br>
+            <input type="text" name="pregunta" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" placeholder="Ej: ¿Cuál es el sinónimo de feliz?">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label style="font-weight: bold;">Opciones (separadas por coma):</label><br>
+            <input type="text" name="opciones" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" placeholder="Ej: Enojado,Triste,Alegre">
+        </div>
+
+        <div style="margin-bottom: 25px;">
+            <label style="font-weight: bold;">Respuesta Correcta (debe coincidir con una opción):</label><br>
+            <input type="text" name="respuesta_correcta" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" placeholder="Ej: Alegre">
+        </div>
+
+        <button type="submit" class="btn-opcion" style="width: 100%; background-color: #4CAF50; color: white; border: none;">Guardar Pregunta</button>
+    </form>
+    
+    <div class="controles-navegacion">
+        <a href="{{ url_for('index') }}" class="btn-secundario">Volver al Inicio</a>
+    </div>
+</section>
+{% endblock %}

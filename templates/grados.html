@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section style="text-align: center;">
+    <h2 style="color: #1565C0;">¡Hola! Elige tu grado escolar 🎒</h2>
+    
+    <div style="display: flex; justify-content: center; gap: 20px; margin-top: 30px; flex-wrap: wrap; max-width: 800px; margin-left: auto; margin-right: auto;">
+        <!-- Ciclo mágico para crear los 6 grados -->
+        {% for g in range(1, 7) %}
+        <a href="{{ url_for('seleccion_materia', grado_id=g) }}" style="text-decoration: none;">
+            <div style="background-color: #FFF9C4; border: 3px solid #FBC02D; padding: 30px; border-radius: 15px; width: 120px; cursor: pointer; transition: transform 0.2s;">
+                <h1 style="margin: 0; font-size: 3rem; color: #F57F17;">{{ g }}º</h1>
+                <p style="margin-top: 10px; font-weight: bold; color: #333;">Grado</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

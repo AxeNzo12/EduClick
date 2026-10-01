@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="pantalla-actividad">
+    <!-- Marcador de Puntos (¡AQUÍ ESTÁ LA SOLUCIÓN, {{ puntos }} en vez de 0!) -->
+    <div style="background-color: #FFF9C4; padding: 10px; border-radius: 10px; margin-bottom: 20px; border: 2px solid #FBC02D; display: flex; justify-content: space-around; font-weight: bold; font-size: 1.2rem;">
+        <span>👤 Estudiante: {{ nombre_usuario }}</span>
+        <span>🏆 Puntuación: <span id="contador-puntos">{{ puntos }}</span> pts</span>
+    </div>
+
+    <h2>Actividad de {{ grado_id }}º Grado</h2>
+    
+    <div class="contenedor-ejercicio" id="contenedor-ejercicio">
+        <p class="instruccion">{{ actividad.pregunta }}</p>
+        
+        <div class="opciones-interactivas">
+            {% for opcion in opciones %}
+                <button class="btn-opcion" onclick="validarRespuesta('{{ opcion }}', {{ actividad.id }})">{{ opcion }}</button>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="retroalimentacion" class="mensaje-feedback" style="display: none;"></div>
+
+    <div id="contenedor-siguiente" style="display: none; margin-top: 20px;">
+        <button onclick="siguientePregunta({{ actividad.id }})" class="btn-opcion" style="background-color: #4CAF50; color: white; width: 100%;">Siguiente Pregunta ➡️</button>
+    </div>
+
+    <div class="controles-navegacion" style="margin-top: 20px;">
+         <a href="{{ url_for('seleccion_materia', grado_id=grado_id) }}" class="btn-secundario">Regresar a Materias</a>
+    </div>
+</section>
+
+<script>
+    function validarRespuesta(respuestaSeleccionada, actividadId) {
+        fetch('/api/validar_respuesta', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ respuesta: respuestaSeleccionada, actividad_id: actividadId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const feedbackDiv = document.getElementById('retroalimentacion');
+            feedbackDiv.style.display = 'block';
+            feedbackDiv.textContent = data.mensaje;
+            
+            // Actualizar puntos en pantalla SIN resetear
+            document.getElementById('contador-puntos').textContent = data.puntos;
+
+            if (data.correcta) {
+                feedbackDiv.className = 'mensaje-feedback correcto';
+                const botones = document.querySelectorAll('.opciones-interactivas .btn-opcion');
+                botones.forEach(btn => btn.disabled = true);
+                document.getElementById('contenedor-siguiente').style.display = 'block';
+            } else {
+                feedbackDiv.className = 'mensaje-feedback incorrecto';
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function siguientePregunta(idActual) {
+        // La redirección ahora viaja con grado_id y materia_id correctos
+        window.location.href = "/actividad/{{ grado_id }}/{{ materia_id }}?excluir=" + idActual;
+    }
+</script>
+{% endblock %}

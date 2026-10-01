@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduClick</title>
+    <!-- Enlace a la hoja de estilos responsiva -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="header-principal">
+        <h1>🚀 EduClick</h1>
+        <p>Aprender es divertido</p>
+    </header>
+
+    <!-- BARRA DE USUARIO Y CERRAR SESIÓN (Se muestra solo si hay sesión iniciada) -->
+    {% if session.get('usuario_nombre') %}
+    <div style="background-color: #f1f8e9; padding: 10px 20px; text-align: right; border-bottom: 2px solid #c5e1a5; margin-bottom: 20px;">
+        <span style="margin-right: 15px; font-weight: bold; color: #2E7D32; font-size: 1.1rem;">
+            👤 Alumno: {{ session.get('usuario_nombre') }}
+        </span>
+        <a href="{{ url_for('logout') }}" style="background-color: #E53935; color: white; padding: 8px 15px; text-decoration: none; border-radius: 8px; font-size: 0.9rem; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+            Cerrar Sesión 🚪
+        </a>
+    </div>
+    {% endif %}
+
+    <main class="contenedor-principal">
+        <!-- Aquí se inyectará el contenido de las otras pantallas -->
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>

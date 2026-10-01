@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section style="text-align: center;">
+    <h2 style="color: #2E7D32;">Estás en {{ grado }}º Grado. ¿Qué jugamos? 🎮</h2>
+    
+    <div style="display: flex; justify-content: center; gap: 20px; margin-top: 30px; flex-wrap: wrap; max-width: 900px; margin-left: auto; margin-right: auto;">
+        {% for materia in materias %}
+            <!-- Aquí le pasamos tanto el grado como la materia -->
+            <a href="{{ url_for('motor_actividades', grado_id=grado, materia_id=materia.id) }}" style="text-decoration: none;">
+                <div style="background-color: #E3F2FD; border: 3px solid #64B5F6; padding: 20px; border-radius: 15px; width: 160px; transition: transform 0.2s;">
+                    <span style="font-size: 3rem;">{{ materia.icono }}</span>
+                    <h3 style="margin-top: 10px; color: #1565C0;">{{ materia.nombre }}</h3>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+    <div style="margin-top: 40px;">
+        <a href="{{ url_for('seleccion_grado') }}" style="color: #666; text-decoration: none; font-weight: bold; font-size: 1.2rem;">⬅️ Cambiar de Grado</a>
+    </div>
+</section>
+{% endblock %}
